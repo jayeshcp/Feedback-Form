@@ -45,7 +45,7 @@
         </div>
 
         <!-- Right form -->
-        <div class="form-panel" id="formPanel">
+        <form class="form-panel" id="formPanel" method="post">
 
             <div class="form-header">
                 <h1>We're sad to see you go.</h1>
@@ -94,10 +94,10 @@
 
             <div class="form-footer">
                 <div class="footer-note">Your response is anonymous</div>
-                <button class="btn-submit" onclick="submitForm()">Send Feedback</button>
+                <button class="btn-submit" type="button" onclick="submitForm()">Send Feedback</button>
             </div>
 
-        </div>
+        </form>
 
         <!-- Thank you state (hidden initially) -->
         <div class="thank-you" id="thankYou">
@@ -115,23 +115,20 @@
 
     <script>
         // ── Submit ────────────────────────────────────────────────────
-        function submitForm() {
+        async function submitForm() {
+            event.preventDefault();
+
             const formPanel = document.getElementById('formPanel');
             const thankYou = document.getElementById('thankYou');
 
-            // Collect data (would send to your endpoint)
-            const data = {
-                uninstall_reason: document.getElementById('uninstall_reason').value.trim(),
-                how_likely_to_recommend: document.getElementById('how_likely_to_recommend').value.trim(),
-                comment: document.getElementById('openText').value.trim()
-            };
-
-            console.log('Feedback submitted:', data);
-            fetch('https://script.google.com/macros/s/AKfycbwT6cV40WeC-K15FmVb-INUTWSkynLso2e_t_uT4T7lCnAWDXgh59OlCI5T7_I-Y3V1/exec', {
+            const body = new FormData(formPanel);
+            const response = await fetch('https://script.google.com/macros/s/AKfycbwT6cV40WeC-K15FmVb-INUTWSkynLso2e_t_uT4T7lCnAWDXgh59OlCI5T7_I-Y3V1/exec', {
                 method: 'POST',
-                body: JSON.stringify(data),
-                headers: { 'Content-Type': 'application/json' }
+                body
             });
+
+            const result = await response.json();
+            console.log('Feedback submitted! Thanks 🙏');
 
             // Show thank-you
             formPanel.style.display = 'none';
@@ -143,7 +140,7 @@
             });
 
             setTimeout(() => {
-                // window.close();  // Uncomment on actual uninstall page
+                window.close();  // Uncomment on actual uninstall page
             }, 3200);
         }
     </script>
