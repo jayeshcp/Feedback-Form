@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Jayesh Chandrapal">
+    <meta name="description" content="My Diary chrome extension uninstall feedback form">
+    <title>My Diary — Goodbye 💔</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="page-wrap">
+
+        <!-- Left spine -->
+        <div class="spine">
+            <div class="spine-icon">📖</div>
+            <div class="spine-content">
+                <div class="spine-title">My Diary Chrome Extension</div>
+                <div class="spine-sub">lightweight and beautiful personal diary</div>
+            </div>
+            <div class="spine-stats">
+                <div class="stat-item">
+                    <div class="stat-dot"></div>
+                    <div class="stat-text">Private & Secure</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-dot"></div>
+                    <div class="stat-text">Keep your data local</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-dot"></div>
+                    <div class="stat-text">Works offline</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-dot"></div>
+                    <div class="stat-text">Export your notes</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right form -->
+        <div class="form-panel" id="formPanel">
+
+            <div class="form-header">
+                <h1>We're sad to see you go.</h1>
+                <p>Your feedback helps us grow. Just a minute — it means more than you know.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Q1: Reason -->
+            <div class="question">
+                <div class="question-label">
+                    <span class="q-num">1</span>
+                    Why did you uninstall My Diary?
+                </div>
+                <textarea id="uninstall_reason" name="uninstall_reason" rows="3"></textarea>
+            </div>
+
+            <!-- Q4: NPS -->
+            <div class="question">
+                <div class="question-label">
+                    <span class="q-num">4</span>
+                    How likely are you to recommend My Diary to a friend?
+                </div>
+                <div>
+                    <select name="how_likely_to_recommend" id="how_likely_to_recommend">
+                        <option value="0">0 (not at all likely)</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5 (extremely likely)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Q5: Open text -->
+            <div class="question">
+                <div class="question-label">
+                    <span class="q-num">5</span>
+                    Anything else you'd like to tell us?
+                </div>
+                <textarea id="comments" name="comments"
+                    placeholder="What could we have done better? What did you love? We read every single response…"
+                    rows="3"></textarea>
+            </div>
+
+            <div class="form-footer">
+                <div class="footer-note">Your response is anonymous</div>
+                <button class="btn-submit" onclick="submitForm()">Send Feedback</button>
+            </div>
+
+        </div>
+
+        <!-- Thank you state (hidden initially) -->
+        <div class="thank-you" id="thankYou">
+            <div class="ty-icon">🕊️</div>
+            <h2>Thank you for sharing.</h2>
+            <p>Your words will shape the next chapter of My Diary. We hope our paths cross again someday.</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <small style="font-size:11px; color:var(--faded); font-family:'Lora',serif; font-style:italic;">This page
+                will close in a moment…</small>
+        </div>
+
+    </div>
+
+    <script>
+        // ── Submit ────────────────────────────────────────────────────
+        function submitForm() {
+            const formPanel = document.getElementById('formPanel');
+            const thankYou = document.getElementById('thankYou');
+
+            // Collect data (would send to your endpoint)
+            const data = {
+                uninstall_reason: document.getElementById('uninstall_reason').value.trim(),
+                how_likely_to_recommend: document.getElementById('how_likely_to_recommend').value.trim(),
+                comment: document.getElementById('openText').value.trim()
+            };
+
+            console.log('Feedback submitted:', data);
+            fetch('https://script.google.com/macros/s/AKfycbwT6cV40WeC-K15FmVb-INUTWSkynLso2e_t_uT4T7lCnAWDXgh59OlCI5T7_I-Y3V1/exec', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            // Show thank-you
+            formPanel.style.display = 'none';
+            thankYou.style.display = 'flex';
+
+            // Animate progress bar then close
+            requestAnimationFrame(() => {
+                document.getElementById('progressFill').style.width = '100%';
+            });
+
+            setTimeout(() => {
+                // window.close();  // Uncomment on actual uninstall page
+            }, 3200);
+        }
+    </script>
+</body>
+
+</html>
