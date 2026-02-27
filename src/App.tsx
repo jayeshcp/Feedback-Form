@@ -218,13 +218,17 @@ export default function FeedbackForm() {
   const [nps, setNps] = useState<string | null>(null);
   const [comments, setComments] = useState("");
 
+  function sanitize(str: string): string {
+    return str?.trim().replace(/[<>]/g, "");
+  }
+
   async function handleSubmit() {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append("uninstall_reason", uninstallReason);
-      formData.append("how_likely_to_recommend", nps ?? "");
-      formData.append("comments", comments);
+      formData.append("uninstall_reason", sanitize(uninstallReason));
+      formData.append("how_likely_to_recommend", sanitize(nps ?? ""));
+      formData.append("comments", sanitize(comments));
 
       await fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: formData });
       console.log("Feedback submitted! Thanks 🙏");
@@ -282,7 +286,7 @@ export default function FeedbackForm() {
               {/* Q1 */}
               <Question
                 num="1"
-                label="Why did you uninstall My Diary?"
+                label="What could we have done differently?"
                 animClass="animate-fade-up-1"
               >
                 <StyledTextarea
