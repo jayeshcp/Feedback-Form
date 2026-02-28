@@ -27,34 +27,44 @@ function Spine() {
         sm:flex-row sm:items-center sm:gap-5 sm:py-8
       "
     >
-      {/* ruled-lines overlay */}
-      <div className="spine-lines absolute inset-0 pointer-events-none" />
-      {/* right shadow edge */}
-      <div className="spine-shadow absolute inset-0 pointer-events-none" />
+      <div className="flex flex-col">
+        {/* ruled-lines overlay */}
+        <div className="spine-lines absolute inset-0 pointer-events-none" />
+        {/* right shadow edge */}
+        <div className="spine-shadow absolute inset-0 pointer-events-none" />
 
-      {/* icon */}
-      <div className="relative z-10 text-[44px] leading-none">📖</div>
+        {/* icon */}
+        <div className="relative z-10 text-[28px] leading-none">📖</div>
 
-      {/* title + sub */}
-      <div className="relative z-10">
-        <p className="font-serif text-[22px] font-semibold text-white leading-snug mb-2">
-          My Diary Chrome Extension
-        </p>
-        <p className="text-[12px] text-white/65 font-light leading-relaxed">
-          lightweight and beautiful personal diary
-        </p>
-      </div>
+        {/* title + sub */}
+        <div className="relative z-10 mb-8">
+          <p className="font-serif text-xl font-semibold leading-snug mb-2">
+            <a
+              href="https://chromewebstore.google.com/detail/my-diary/adolnkbfnlkkefhlhnjogliicljjfnip"
+              target="_blank"
+              className="underline text-blue-100 hover:text-white"
+            >
+              My Diary Chrome Extension
+            </a>
+          </p>
+          <p className="text-[16px] text-white/65 font-light leading-relaxed">
+            lightweight and beautiful personal diary
+          </p>
+        </div>
 
-      {/* stats — hidden on mobile */}
-      <div className="relative z-10 flex flex-col gap-3.5 sm:hidden">
-        {SPINE_STATS.map((s) => (
-          <div key={s} className="flex items-center gap-2.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/50 shrink-0" />
-            <span className="text-[11px] text-white/60 italic font-serif">
-              {s}
-            </span>
+        {/* stats — hidden on mobile */}
+        <div className="relative z-10 mb-8 hidden sm:block">
+          <div className="flex z-10 flex-col gap-3.5">
+            {SPINE_STATS.map((s) => (
+              <div key={s} className="flex items-center gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-white/50 shrink-0" />
+                <span className="text-[12px] text-white/60 italic font-serif">
+                  {s}
+                </span>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
@@ -237,7 +247,7 @@ export default function FeedbackForm() {
     } finally {
       setLoading(false);
       setSubmitted(true);
-      // setTimeout(() => window.close(), 3200); uncomment this for chrome extension
+      setTimeout(() => window.close(), 3200); // uncomment this for chrome extension
     }
   }
 
