@@ -6,4 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: "/Feedback-Form/",
+  define: {
+    'process.env.VITE_APP_VERSION': JSON.stringify(process.env.npm_package_version)
+  }
 });
